@@ -16,8 +16,17 @@ exports.getAllUsers = function(req, res) {
   });
 };
 
+exports.getUser = function(req, res){   
+  UserData.find({_id: req.params.userId},
+    function(err, data){
+      if (err)
+        res.send(err);
+      res.json(data);
+    });
+};
+
 exports.userSignup = function(req, res) {
-  console.log(req.body)
+  console.log('signup')
   UserData.find({name: req.body.name},function(err, data){
     if(data != null && data != ''){
       res.send('User already exists');
@@ -27,7 +36,7 @@ exports.userSignup = function(req, res) {
       userData.save(function(err, data){
         if(err)
           res.send(err.message);
-        res.json(data);
+        res.send("Register Sucessfully");
       });
     }
   })
@@ -50,6 +59,7 @@ exports.userSignin = function(req,res){
 };
 
 exports.updateUser = function(req, res) {
+  console.log(req.data)
   UserData.findOneAndUpdate({_id: req.params.userId}, 
     req.body, {new: true}, function(err, data) {
       if (err)
